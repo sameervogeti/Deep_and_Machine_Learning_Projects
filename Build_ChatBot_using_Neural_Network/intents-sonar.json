@@ -1,0 +1,39 @@
+{"intents": [
+        {"tag": "greeting",
+         "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"],
+         "responses": ["Hello, thanks for visiting", "Good to see you again", "Hi there, how can I help?"],
+         "context_set": ""
+        },
+        {"tag": "goodbye",
+         "patterns": ["Bye", "See you later", "Goodbye"],
+         "responses": ["See you later, thanks for visiting", "Have a nice day", "Bye! Come back again soon."]
+        },
+        {"tag": "thanks",
+         "patterns": ["Thanks", "Thank you", "That's helpful"],
+         "responses": ["Happy to help!", "Any time!", "My pleasure"]
+        },
+        {"tag": "qualitygates_access",
+         "patterns": ["I Need Quality Gates Access", "I Don't Have Access to quality gates", "I Want Quality Gates Access", "I need Access to quality gates"  ],
+         "responses": ["Sure,Let me provide you access to Quality Gates"]
+        },
+        {"tag": "qualityprofile_access",
+         "patterns": ["I Need Quality Profiles Access", "I Don't Have Access to quality profiles", "I Want Quality profiles Access", "I need Access to quality profiles"  ],
+         "responses": ["Sure,Let me provide you access to Quality Profiles"]
+        },
+        {"tag": "projectaccess",
+         "patterns": ["I Need Project Access", "Can you provide me project access", "I Don't have project access" ],
+         "responses": ["Sure. Please Provide me the Project Key"],
+         "context_set": "projectaccess_followup"
+        },
+        {"tag": "projectname-env",
+         "patterns": ["prod","non-prod"],
+         "responses": ["Thank You, Please Provide a portfolio"],
+         "context_filter": "projectaccess_followup"
+        },
+        {"tag": "portfolio-project",
+         "patterns": ["CFO","CIO","GTS","VBS" ],
+         "responses": ["Sure. Thank you for providing the Portfolio."],
+         "context_filter": "projectaccess_followup"
+        }
+   ]
+}

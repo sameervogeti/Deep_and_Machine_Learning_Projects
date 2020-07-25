@@ -9,6 +9,7 @@ Original file is located at
 
 # Libraries needed for NLP
 import nltk
+
 nltk.download('punkt')
 from nltk.stem.lancaster import LancasterStemmer
 stemmer = LancasterStemmer()
@@ -20,14 +21,11 @@ import tflearn
 import random
 import json
 
-from google.colab import files
-files.upload()
+
 
 # import our chat-bot intents file
-with open('intents.json') as json_data:
+with open('intents-sonar.json') as json_data:
     intents = json.load(json_data)
-
-intents
 
 words = []
 classes = []
@@ -103,8 +101,9 @@ net = tflearn.regression(net)
 model = tflearn.DNN(net, tensorboard_dir='tflearn_logs')
 
 # Start training
-model.fit(train_x, train_y, n_epoch=1000, batch_size=8, show_metric=True)
-model.save('model.tflearn')
+#model.fit(train_x, train_y, n_epoch=1000, batch_size=8, show_metric=True)
+#model.save('model.tflearn')
+
 
 import pickle
 pickle.dump( {'words':words, 'classes':classes, 'train_x':train_x, 'train_y':train_y}, open( "training_data", "wb" ) )
@@ -116,11 +115,11 @@ classes = data['classes']
 train_x = data['train_x']
 train_y = data['train_y']
 
-with open('intents.json') as json_data:
+with open('intents-sonar.json') as json_data:
     intents = json.load(json_data)
 
 # load the saved model
-model.load('./model.tflearn')
+
 
 def clean_up_sentence(sentence):
     # tokenizing the pattern
@@ -147,6 +146,7 @@ def bow(sentence, words, show_details=False):
 ERROR_THRESHOLD = 0.30
 def classify(sentence):
     # generate probabilities from the model
+    model.load('./model.tflearn')
     results = model.predict([bow(sentence, words)])[0]
     # filter out predictions below a threshold
     results = [[i,r] for i,r in enumerate(results) if r>ERROR_THRESHOLD]
@@ -172,20 +172,13 @@ def response(sentence, userID='123', show_details=False):
 
             results.pop(0)
 
-classify('What are you hours of operation?')
+#classify('I Need Project Access')
 
-response('What are you hours of operation?')
+#response("I Need Project Access")
 
-response('What is menu for today?')
 
-#Some of other context free responses.
-response('Do you accept Credit Card?')
 
-response('Where can we locate you?')
 
-response('That is helpful')
-
-response('Bye')
 
 #Adding some context to the conversation i.e. Contexualization for altering question and intents etc.
 # create a data structure to hold user context
@@ -194,6 +187,7 @@ context = {}
 ERROR_THRESHOLD = 0.25
 def classify(sentence):
     # generate probabilities from the model
+    model.load('./model.tflearn')
     results = model.predict([bow(sentence, words)])[0]
     # filter out predictions below a threshold
     results = [[i,r] for i,r in enumerate(results) if r>ERROR_THRESHOLD]
@@ -228,15 +222,15 @@ def response(sentence, userID='123', show_details=False):
 
             results.pop(0)
 
-response('Can you please let me know the delivery options?')
+response('I Need Project Access')
+response('non-prod')
+response('CFO')
+print(context)
+#response('CFO')
+classify('CID')
 
-response('What is menu for today?')
 
-context
 
-response("Hi there!", show_details=True)
-
-response('What is menu for today?')
 
 
 
